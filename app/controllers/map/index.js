@@ -1,4 +1,5 @@
 import Ember from "ember";
+// import { singularize, pluralize } from "ember-inflector";
 
 export default Ember.Controller.extend({
   needs: ["map"],
@@ -159,6 +160,14 @@ export default Ember.Controller.extend({
           input = `{{textarea value=view.fieldValue placeholder=view.key}}`;
         } else if (field.type === "boolean") {
           input = `{{input-boolean value=view.fieldValue key=view.key}}`;
+        } else if (field.type === "association") {
+          input = `{{input value=view.fieldValue placeholder=view.key}}`;
+          // input = `{{ember-selectize
+          //   content=controllers.map.types
+          //   selection=struct.type
+          //   optionValuePath="content.value"
+          //   optionLabelPath="content.name"
+          //   placeholder="type"}}`
         } else {
           input = `{{input value=view.fieldValue placeholder=view.key}}`;
         }

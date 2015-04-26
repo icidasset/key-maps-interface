@@ -8,7 +8,9 @@ export default Ember.Controller.extend({
     { value: "string", name: "String" },
     { value: "text", name: "Text" },
     { value: "number", name: "Number" },
-    { value: "boolean", name: "Boolean" }
+    { value: "boolean", name: "Boolean" },
+    { value: "---", name: "---" },
+    { value: "association", name: "Association" }
   ],
 
 

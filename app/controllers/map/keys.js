@@ -12,6 +12,10 @@ export default Ember.Controller.extend({
     var structure = this.get("model.structure");
     var types = this.get("controllers.map.types");
 
+    types = types.filter(function(t) {
+      return t.value && t.value.length && (t.value !== "---");
+    });
+
     var reformatted = structure.map(function(s) {
       var type;
 
@@ -21,8 +25,9 @@ export default Ember.Controller.extend({
         }
       });
 
-      return { key: s.key, type: type };
-    });
+      if (type) return { key: s.key, type: type };
+      else return null;
+    }).compact();
 
     if (reformatted.length === 0) {
       reformatted.push({});
