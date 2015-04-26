@@ -1,0 +1,7 @@
+{{#if session.isAuthenticated}}
+  {{partial "partials/signed-in-index"}}
+
+{{else}}
+  {{render "about"}}
+
+{{/if}}
