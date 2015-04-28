@@ -6,18 +6,36 @@ export default Ember.View.extend({
 
   fieldValue: function(k, val) { //, old_val
     var key = this.get("key");
-    var key_array;
-    var obj;
+    var key_array, obj, rt, store, association_type;
 
     // getter
     if (arguments.length === 1) {
-      return this.get("item.structure_changed_data." + key) ||
-             this.get("item.structure_data." + key);
+      rt = this.get("item.structure_changed_data." + key) ||
+           this.get("item.structure_data." + key);
+
+      // if it's an association, look up models
+      if (this.get("type").match(/^association\.\w+$/)) {
+        store = this.get("controller.store");
+        association_type = this.get("type").split(".").get("lastObject");
+
+        if (association_type === "one") {
+          rt = store.getById("map-item", parseInt(rt, 10));
+        } else if (association_type === "many") {
+          // TODO
+        }
+      }
+
+      return rt;
 
     // setter
     } else {
+      // parse values
+      // number (which might be a string) -> float
+      // association_model -> model.id
       if (this.get("type") === "number") {
         val = parseFloat(val);
+      } else if (this.get("type").match(/^association\.\w+$/)) {
+        val = val.id;
       }
 
       if (!this.get("item.structure_changed_data")) {

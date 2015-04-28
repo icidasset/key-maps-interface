@@ -1,10 +1,15 @@
 import Ember from "ember";
 import AuthenticatedRouteMixin from "simple-auth/mixins/authenticated-route-mixin";
-import { pluralize } from "ember-inflector";
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   model() {
+    return new Ember.RSVP.Promise((resolve) => {
+      this.getContext(resolve);
+    });
+  },
+
+  getContext(resolve) {
     var promises = [];
     var map_model = this.modelFor("map");
     var associations;
@@ -17,21 +22,29 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     // map items for associations
     associations = map_model.get("structure").filter(function(struct) {
-      return struct.type === "association";
+      return !!struct.type.match(/^association\.\w+$/);
     });
 
     associations.forEach((association) => {
-      var singular = singularize(association.key);
-      var plural = pluralize(association.key);
-
-      // var is_singular = singular === association.key;
-      // var is_plural = !is_singular;
-
-      var map = this.getMap({ slug: plural, slug_backup: singular });
+      var associated_map = this.getMap({ slug: association.key.split("->")[0] });
+      promises.push(associated_map.get("map_items"));
     });
 
     // promise
-    return Ember.RSVP.all(promises);
+    Ember.RSVP.all(promises).then(function(resolved_objects) {
+      var map_items = resolved_objects[0];
+      var associations = {};
+
+      resolved_objects.slice(1, resolved_objects.length).forEach(function(res) {
+        var slug = res.record.get("slug");
+        if (slug) associations[slug] = res;
+      });
+
+      resolve({
+        map_items: map_items,
+        associations: associations
+      });
+    });
   },
 
   setupController(controller, context) {
@@ -43,8 +56,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   getMap(params) {
     return this.store.all("map").filter(function(m) {
-      return (m.get("slug") === params.slug) ||
-             (m.get("slug") === params.slug_backup);
+      return m.get("slug") === params.slug;
     })[0];
   }
 });

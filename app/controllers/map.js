@@ -10,7 +10,8 @@ export default Ember.Controller.extend({
     { value: "number", name: "Number" },
     { value: "boolean", name: "Boolean" },
     { value: "---", name: "---" },
-    { value: "association", name: "Association" }
+    { value: "association.one", name: "Association (One)" },
+    { value: "association.many", name: "Association (Many)" }
   ],
 
 

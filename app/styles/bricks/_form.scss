@@ -387,7 +387,7 @@
     &.dropdown-active,
     &.focus {
       background: white;
-      border-color: $focus_color;
+      border-color: $focus_color !important;
       color: $the_color;
       z-index: 9;
     }

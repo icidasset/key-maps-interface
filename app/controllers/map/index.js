@@ -1,5 +1,5 @@
 import Ember from "ember";
-// import { singularize, pluralize } from "ember-inflector";
+import { singularize } from "ember-inflector";
 
 export default Ember.Controller.extend({
   needs: ["map"],
@@ -160,20 +160,22 @@ export default Ember.Controller.extend({
           input = `{{textarea value=view.fieldValue placeholder=view.key}}`;
         } else if (field.type === "boolean") {
           input = `{{input-boolean value=view.fieldValue key=view.key}}`;
-        } else if (field.type === "association") {
-          input = `{{input value=view.fieldValue placeholder=view.key}}`;
-          // input = `{{ember-selectize
-          //   content=controllers.map.types
-          //   selection=struct.type
-          //   optionValuePath="content.value"
-          //   optionLabelPath="content.name"
-          //   placeholder="type"}}`
+        } else if (!!field.type.match(/^association\.\w+$/)) {
+          var [association_map_slug, association_map_item_value_key] = field.key.split("->");
+          var singular_association_map_slug = singularize(association_map_slug);
+
+          input = `{{ember-selectize
+            content=associations.${association_map_slug}
+            selection=view.fieldValue
+            optionValuePath="content.id"
+            optionLabelPath="content.structure_data.${association_map_item_value_key}"
+            placeholder="${singular_association_map_slug}"}}`;
         } else {
           input = `{{input value=view.fieldValue placeholder=view.key}}`;
         }
 
         t = t + `
-          {{#view "map/index-field" key="${field.key}" type="${field.type}" item=map_item}}
+          {{#view "map/index-field" key="${field.key}" type="${field.type}" item=map_item associations=associations}}
             ${input}
             <div class="field__type">
               <span>${field.type}</span>

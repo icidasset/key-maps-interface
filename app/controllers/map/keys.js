@@ -51,13 +51,10 @@ export default Ember.Controller.extend({
       var k_chain;
 
       if (k && t) {
-        k = k.replace(/\.(\W|\s)+/g, ".")
-             .replace(/(\W|\s)+\./g, ".")
-
-             .replace(/\s+/g, "-")
-             .replace(/[^\w\-\.]+/g, "")
-             .replace(/\-\-+/g, '-')
-             .replace(/(^\W+|\W+$)/, "");
+        k = k.replace(/[^a-zA-Z0-9->]+/g, "")
+             .replace(/-+/g, "-")
+             .replace(/>+/g, ">")
+             .replace(/(^(-|>)+)|((-|>)+$)/g, "");
 
         if (k.length > 0) {
           k.split(".").forEach(function(p) {
