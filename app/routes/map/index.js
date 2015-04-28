@@ -27,7 +27,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     associations.forEach((association) => {
       var associated_map = this.getMap({ slug: association.key.split("->")[0] });
-      promises.push(associated_map.get("map_items"));
+      if (associated_map) promises.push(associated_map.get("map_items"));
     });
 
     // promise
@@ -37,7 +37,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
       resolved_objects.slice(1, resolved_objects.length).forEach(function(res) {
         var slug = res.record.get("slug");
-        if (slug) associations[slug] = res;
+        if (slug) {
+          associations[slug] = res;
+        }
       });
 
       resolve({
