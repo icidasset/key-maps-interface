@@ -48,19 +48,29 @@ export default Ember.Controller.extend({
       var k = s.key && s.key.length > 0 ? s.key : null;
       var t = s.type ? s.type.value : null;
       var conflict = false;
-      var k_chain;
+      var k_chain, is_association;
 
       if (k && t) {
+        is_association = !!t.match(/^association\.\w+$/);
+
         k = k.replace(/[^a-zA-Z0-9->]+/g, "")
              .replace(/-+/g, "-")
              .replace(/>+/g, ">")
              .replace(/(^(-|>)+)|((-|>)+$)/g, "");
+
+        if (!is_association) {
+          k = k.replace(/->/g, "");
+        }
 
         if (k.length > 0) {
           k.split(".").forEach(function(p) {
             k_chain = k_chain ? k_chain + "." + p : p;
             if (c_keys.indexOf(k_chain) !== -1) conflict = true;
           });
+
+          if (is_association && k.split("->")[1] == null) {
+            conflict = true;
+          }
 
           if (!conflict) {
             c.push({ key: k, type: t });

@@ -163,8 +163,10 @@ export default Ember.Controller.extend({
         } else if (!!field.type.match(/^association\.\w+$/)) {
           var [association_map_slug, association_map_item_value_key] = field.key.split("->");
           var singular_association_map_slug = singularize(association_map_slug);
+          var multiple = (field.type.split(".")[1] === "many") ? "true" : "false";
 
           input = `{{ember-selectize
+            multiple=${multiple}
             content=associations.${association_map_slug}
             selection=view.fieldValue
             optionValuePath="content.id"
