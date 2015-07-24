@@ -12,7 +12,7 @@ const MESSAGES = {
 };
 
 
-export default Ember.Component.extend(EmberValidations.Mixin, {
+export default Ember.Component.extend(EmberValidations, {
   tagName: "header",
   classNames: ["mod-application-header"],
 

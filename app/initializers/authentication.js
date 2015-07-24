@@ -5,8 +5,8 @@ export default {
   name: "authentication",
   before: "simple-auth",
 
-  initialize: function(container) {
-      container.register("authenticator:custom", Authenticator);
-      container.register("authorizer:custom", Authorizer);
+  initialize: function(registry, application) {
+    application.register("authenticator:custom", Authenticator);
+    application.register("authorizer:custom", Authorizer);
   }
 };

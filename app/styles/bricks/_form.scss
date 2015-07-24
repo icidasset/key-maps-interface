@@ -442,5 +442,24 @@
     }
   }
 
+  .multi .selectize-input.items .item {
+    background: #ddd;
+    border: 0;
+    box-shadow: none;
+    color: #5F5F5F;
+    height: 3.2rem;
+    line-height: 3.4rem;
+    margin: 0 1rem 0 0;
+    overflow: hidden;
+    padding-left: 1.25rem;
+    padding-right: 2rem !important;
+    text-shadow: none;
+    vertical-align: top;
+
+    .remove {
+      border-left: 2px solid rgba(black, .065);
+    }
+  }
+
 
 }

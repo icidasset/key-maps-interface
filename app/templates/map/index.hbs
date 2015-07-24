@@ -15,7 +15,7 @@
 <div class="content-wrapper">
   <form class="form" {{action "save" on="submit"}}>
     {{#each sortedModel as |map_item index|}}
-      {{view "map/index-row" template=item_template}}
+      {{map-index-row layout=item_template index=index map_item=map_item associations=associations}}
 
       {{#if map_item.isNew}}
         <div class="form__map-item-ruler"></div>

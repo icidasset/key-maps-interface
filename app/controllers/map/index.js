@@ -157,9 +157,9 @@ export default Ember.Controller.extend({
         }
 
         if (field.type === "text") {
-          input = `{{textarea value=view.fieldValue placeholder=view.key}}`;
+          input = `{{textarea value=fieldValue placeholder=key}}`;
         } else if (field.type === "boolean") {
-          input = `{{input-boolean value=view.fieldValue key=view.key}}`;
+          input = `{{input-boolean value=fieldValue key=key}}`;
         } else if (!!field.type.match(/^association\.\w+$/)) {
           var [association_map_slug, association_map_item_value_key] = field.key.split("->");
           var singular_association_map_slug = singularize(association_map_slug);
@@ -168,21 +168,21 @@ export default Ember.Controller.extend({
           input = `{{ember-selectize
             multiple=${multiple}
             content=associations.${association_map_slug}
-            selection=view.fieldValue
+            selection=fieldValue
             optionValuePath="content.id"
             optionLabelPath="content.structure_data.${association_map_item_value_key}"
             placeholder="${singular_association_map_slug}"}}`;
         } else {
-          input = `{{input value=view.fieldValue placeholder=view.key}}`;
+          input = `{{input value=fieldValue placeholder=key}}`;
         }
 
         t = t + `
-          {{#view "map/index-field" key="${field.key}" type="${field.type}" item=map_item associations=associations}}
+          {{#map-index-field key="${field.key}" type="${field.type}" item=map_item associations=associations as |fieldValue key|}}
             ${input}
             <div class="field__type">
               <span>${field.type}</span>
             </div>
-          {{/view}}
+          {{/map-index-field}}
         `;
       });
 

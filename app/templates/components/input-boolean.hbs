@@ -1,10 +1,10 @@
-<span {{bind-attr class=":input-boolean__value is_true:is-active"}} {{action "activate" true}}>
+<span class="input-boolean__value {{if is_true 'is-active'}}" {{action "activate" true}}>
   <span>True</span>
 </span>
 
 <span class="input-boolean__seperator">OR</span>
 
-<span {{bind-attr class=":input-boolean__value is_false:is-active"}} {{action "activate" false}}>
+<span class="input-boolean__value {{if is_false 'is-active'}}" {{action "activate" false}}>
   <span>False</span>
 </span>
 

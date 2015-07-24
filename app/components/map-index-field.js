@@ -1,6 +1,7 @@
 import Ember from "ember";
 
-export default Ember.View.extend({
+
+export default Ember.Component.extend({
   classNames: "field",
 
 
@@ -15,14 +16,17 @@ export default Ember.View.extend({
 
       // if it's an association, look up models
       if (this.get("type").match(/^association\.\w+$/)) {
-        store = this.get("controller.store");
+        store = this.get("targetObject.targetObject.store");
         association_type = this.get("type").split(".").get("lastObject");
 
         if (association_type === "one") {
           rt = store.getById("map-item", parseInt(rt, 10));
         } else if (association_type === "many") {
+          rt = [];
           // TODO
         }
+
+        console.log("get", association_type, rt);
       }
 
       return rt;
@@ -35,7 +39,15 @@ export default Ember.View.extend({
       if (this.get("type") === "number") {
         val = parseFloat(val);
       } else if (this.get("type").match(/^association\.\w+$/)) {
-        val = val.id;
+        association_type = this.get("type").split(".").get("lastObject");
+
+        if (association_type === "one") {
+          val = val.id;
+        } else if (association_type === "many") {
+          val = [];
+        }
+
+        console.log("set", association_type, val);
       }
 
       if (!this.get("item.structure_changed_data")) {
@@ -85,6 +97,15 @@ export default Ember.View.extend({
     } else {
       return obj;
     }
+  },
+
+
+  actions: {
+
+    "add-value": function(x) {
+      console.log(x);
+    }
+
   }
 
 });

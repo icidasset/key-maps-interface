@@ -1,5 +1,5 @@
 import Ember from "ember";
 
-export default Ember.View.extend({
+export default Ember.Component.extend({
   classNames: ["form__map-item-data", "row-wrapper"]
 });

@@ -1,6 +1,7 @@
 import Ember from "ember";
 import AuthenticatedRouteMixin from "simple-auth/mixins/authenticated-route-mixin";
 
+
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
   model() {
@@ -36,7 +37,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       var associations = {};
 
       resolved_objects.slice(1, resolved_objects.length).forEach(function(res) {
-        var slug = res.record.get("slug");
+        var slug = res.record._data.slug;
         if (slug) {
           associations[slug] = res;
         }

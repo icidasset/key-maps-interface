@@ -1,7 +1,7 @@
 {{#if session.isAuthenticated}}
 
   <div class="mod-map-selector">
-    <div {{bind-attr class=":map-selector__input isValid:is-valid:is-not-valid"}}>
+    <div class="map-selector__input {{if isValid 'is-valid' 'is-not-valid'}}">
       {{input value=map_selector_value key-up="input_key_up" placeholder="Map name goes here"}}
 
       <div class="map-selector__match">
